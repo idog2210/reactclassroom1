@@ -1,0 +1,41 @@
+.recipes {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
+}
+
+.recipes ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recipes li {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipes h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.recipes h4 {
+  margin: 12px 0 6px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.recipeImage {
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: auto;
+}
