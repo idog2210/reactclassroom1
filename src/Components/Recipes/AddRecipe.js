@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
+import DynamicInputList from './DynamicInputList';
 
 import classes from './AddRecipe.module.css';
 
@@ -56,56 +57,47 @@ const AddRecipe = (props) => {
     setError(null);
   };
 
+  const handleIngredientChange = (event, index) => {
+    const newIng = [...ingredients];
+    const newValue = event.target.value;
+
+    newIng[index] = newValue;
+
+    if (index === ingredients.length - 1 && newValue !== '') {
+      newIng.push('');
+    }
+    if (newValue.trim() === '' && ingredients.length > 1) {
+      newIng.splice(index, 1);
+    }
+
+    setIngredients(newIng);
+  };
+
+  const handleInstructionChange = (event, index) => {
+    const newList = [...instructions];
+    const newValue = event.target.value;
+
+    newList[index] = newValue;
+    if (index === instructions.length - 1 && newValue.trim() !== '') {
+      newList.push('');
+    }
+    if (newValue.trim() === '' && instructions.length > 1) {
+      newList.splice(index, 1);
+    }
+
+    setInstructions(newList);
+  };
+
   return (
     <div>
       {error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />}
       <Card className={classes.input}>
         <form onSubmit={addRecipeHandler}>
           <label htmlFor="recipeName">Recipe name</label>
-          <input id="recipeName" type="text" value={recipeName} onChange={recipeNameChangeHandler} />
-          <label htmlFor="ingredients">Ingredients</label>
-          {ingredients.map((value, index) => (
-            <input
-              key={index}
-              type="text"
-              value={value}
-              onChange={(event) => {
-                const newIng = [...ingredients];
-                const newValue = event.target.value;
-                newIng[index] = newValue;
-                if (index === ingredients.length - 1 && value.trim() === '' && newValue.trim() !== '') {
-                  newIng.push('');
-                }
+          <input id="recipeName" type="text" value={recipeName} onChange={recipeNameChangeHandler} autoComplete="off" />
+          <DynamicInputList label="Ingredients" id="ingredients" values={ingredients} onChange={handleIngredientChange} />
 
-                if (newValue.trim() === '' && ingredients.length > 1) {
-                  newIng.splice(index, 1);
-                }
-
-                setIngredients(newIng);
-              }}
-            />
-          ))}
-          <label htmlFor="instructions">Instructions</label>
-          {instructions.map((value, index) => (
-            <input
-              key={index}
-              type="text"
-              value={value}
-              onChange={(event) => {
-                const newIns = [...instructions];
-                const newValue = event.target.value;
-                newIns[index] = newValue;
-                if (index === instructions.length - 1 && value.trim() === '' && newValue.trim() !== '') {
-                  newIns.push('');
-                }
-                if (newValue.trim() === '' && instructions.length > 1) {
-                  newIns.splice(index, 1);
-                }
-
-                setInstructions(newIns);
-              }}
-            />
-          ))}
+          <DynamicInputList label="Instructions" id="instructions" values={instructions} onChange={handleInstructionChange} />
           <label htmlFor="image">Add Image</label>
           <input id="image" type="file" accept="image/*" onChange={(event) => fileHandler(event.target.files && event.target.files[0])}></input>
           <Button type="submit">Add recipe</Button>

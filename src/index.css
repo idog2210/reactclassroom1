@@ -3,9 +3,12 @@
 }
 
 html {
-  font-family: sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f4f3fa;
+  color: #1a1a1a;
 }
 
 body {
   margin: 0;
+  line-height: 1.4;
 }

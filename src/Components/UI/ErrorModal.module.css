@@ -5,7 +5,7 @@
   width: 100%;
   height: 100vh;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .modal {
@@ -15,24 +15,33 @@
   width: 80%;
   z-index: 100;
   overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .header {
-  background: #4f005f;
+  background: #ff4d6a;
   padding: 1rem;
 }
 
 .header h2 {
   margin: 0;
   color: white;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .content {
   padding: 1rem;
+  color: #2a2a2a;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .actions {
-  padding: 1rem;
+  padding: 0.75rem 1rem 1rem;
   display: flex;
   justify-content: flex-end;
 }
