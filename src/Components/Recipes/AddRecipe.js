@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
 import DynamicInputList from './DynamicInputList';
+import Recipes from '../../store/RecipesContext';
 
 import classes from './AddRecipe.module.css';
 
-const AddRecipe = (props) => {
+const { Context } = Recipes;
+
+const AddRecipe = () => {
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState(['']);
   const [instructions, setInstructions] = useState(['']);
   const [image, setImage] = useState(null);
   const [error, setError] = useState();
+
+  const { addRecipe } = useContext(Context);
 
   const addRecipeHandler = (event) => {
     event.preventDefault();
@@ -32,12 +37,13 @@ const AddRecipe = (props) => {
       return;
     }
 
-    props.onAddRecipe(
+    addRecipe(
       recipeName,
       ingredients.filter((s) => s.trim() !== ''),
       instructions.filter((s) => s.trim() !== ''),
       URL.createObjectURL(image)
     );
+
     setRecipeName('');
     setIngredients(['']);
     setInstructions(['']);
