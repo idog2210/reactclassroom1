@@ -39,3 +39,21 @@
   border-radius: 8px;
   margin-top: auto;
 }
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions button {
+  flex: 1;
+  margin: 0 4px;
+}
+
+.recipeItem input[type='text'] {
+  width: 100%;
+  padding: 6px;
+  font: inherit;
+  margin-bottom: 8px;
+}

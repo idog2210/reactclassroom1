@@ -1,27 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext } from 'react';
+import useRecipes from '../hooks/useRecipes';
 
 const RecipesContext = createContext({
   recipes: [],
   addRecipe: () => {},
+  deleteRecipe: () => {},
+  editRecipe: () => {},
 });
 
 const RecipesProvider = ({ children }) => {
-  const [recipes, setRecipes] = useState([]);
+  const { recipes, addRecipe, deleteRecipe, editRecipe } = useRecipes();
 
-  const addRecipe = (name, ingredients, instructions, image) => {
-    setRecipes((prev) => [
-      ...prev,
-      {
-        id: Math.random().toString(),
-        name,
-        ingredients,
-        instructions,
-        image,
-      },
-    ]);
-  };
-
-  return <RecipesContext.Provider value={{ recipes, addRecipe }}>{children}</RecipesContext.Provider>;
+  return <RecipesContext.Provider value={{ recipes, addRecipe, deleteRecipe, editRecipe }}>{children}</RecipesContext.Provider>;
 };
 
 const RecipesModule = {
