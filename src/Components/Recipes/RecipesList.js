@@ -2,13 +2,11 @@ import React, { useContext } from 'react';
 
 import Card from '../UI/Card';
 import RecipeItem from './RecipeItem';
-import Recipes from '../../store/RecipesContext';
+import { RecipesContext } from '../../store/RecipesContext';
 import classes from './RecipesList.module.css';
 
-const { Context } = Recipes;
-
 const RecipesList = () => {
-  const { recipes } = useContext(Context);
+  const { recipes } = useContext(RecipesContext);
 
   return (
     <Card className={classes.recipes}>

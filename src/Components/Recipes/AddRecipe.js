@@ -4,11 +4,9 @@ import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
 import DynamicInputList from './DynamicInputList';
-import Recipes from '../../store/RecipesContext';
+import { RecipesContext } from '../../store/RecipesContext';
 
 import classes from './AddRecipe.module.css';
-
-const { Context } = Recipes;
 
 const AddRecipe = () => {
   const [recipeName, setRecipeName] = useState('');
@@ -17,11 +15,18 @@ const AddRecipe = () => {
   const [image, setImage] = useState(null);
   const [error, setError] = useState();
 
-  const { addRecipe } = useContext(Context);
+  const { addRecipe } = useContext(RecipesContext);
 
   const addRecipeHandler = (event) => {
     event.preventDefault();
-    if (recipeName.trim().length === 0 || ingredients.filter((s) => s.trim() !== '').length === 0 || instructions.filter((s) => s.trim() !== '').length === 0 || !image) {
+    const trimmedName = recipeName.trim();
+
+    const hasName = trimmedName.length > 0;
+    const hasIngredients = ingredients.some((ing) => ing.trim() !== '');
+    const hasInstructions = instructions.some((ins) => ins.trim() !== '');
+    const hasImage = !!image;
+
+    if (!hasName || !hasIngredients || !hasInstructions || !hasImage) {
       setError({
         title: 'Invalid Input',
         message: 'Please fill all the input fields: Name, Ingredients, Instructions and Image.',
@@ -63,35 +68,19 @@ const AddRecipe = () => {
     setError(null);
   };
 
-  const handleIngredientChange = (event, index) => {
-    const newIng = [...ingredients];
+  const handleDynamicListChange = (event, index, setList) => {
     const newValue = event.target.value;
 
-    newIng[index] = newValue;
+    setList((prevList) => {
+      const updatedList = [...prevList];
 
-    if (index === ingredients.length - 1 && newValue !== '') {
-      newIng.push('');
-    }
-    if (newValue.trim() === '' && ingredients.length > 1) {
-      newIng.splice(index, 1);
-    }
+      updatedList[index] = newValue;
 
-    setIngredients(newIng);
-  };
+      const cleanedList = updatedList.filter((item) => item.trim() !== '');
+      cleanedList.push('');
 
-  const handleInstructionChange = (event, index) => {
-    const newList = [...instructions];
-    const newValue = event.target.value;
-
-    newList[index] = newValue;
-    if (index === instructions.length - 1 && newValue.trim() !== '') {
-      newList.push('');
-    }
-    if (newValue.trim() === '' && instructions.length > 1) {
-      newList.splice(index, 1);
-    }
-
-    setInstructions(newList);
+      return cleanedList;
+    });
   };
 
   return (
@@ -101,9 +90,9 @@ const AddRecipe = () => {
         <form onSubmit={addRecipeHandler}>
           <label htmlFor="recipeName">Recipe name</label>
           <input id="recipeName" type="text" value={recipeName} onChange={recipeNameChangeHandler} autoComplete="off" />
-          <DynamicInputList label="Ingredients" id="ingredients" values={ingredients} onChange={handleIngredientChange} />
+          <DynamicInputList label="Ingredients" id="ingredients" values={ingredients} onChange={(event, index) => handleDynamicListChange(event, index, setIngredients)} />
 
-          <DynamicInputList label="Instructions" id="instructions" values={instructions} onChange={handleInstructionChange} />
+          <DynamicInputList label="Instructions" id="instructions" values={instructions} onChange={(event, index) => handleDynamicListChange(event, index, setInstructions)} />
           <label htmlFor="image">Add Image</label>
           <input id="image" type="file" accept="image/*" onChange={(event) => fileHandler(event.target.files && event.target.files[0])}></input>
           <Button type="submit">Add recipe</Button>

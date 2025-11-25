@@ -1,12 +1,10 @@
 import React, { useContext, useState } from 'react';
 import Button from '../UI/Button';
-import Recipes from '../../store/RecipesContext';
+import { RecipesContext } from '../../store/RecipesContext';
 import classes from './RecipesList.module.css';
 
-const { Context } = Recipes;
-
 const RecipeItem = ({ recipe }) => {
-  const { deleteRecipe, editRecipe } = useContext(Context);
+  const { deleteRecipe, editRecipe } = useContext(RecipesContext);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(recipe.name);
@@ -67,7 +65,7 @@ const RecipeItem = ({ recipe }) => {
         updated.push('');
       }
 
-      if (value.trim() === '' && updated.length > 1 && index < updated.length - 1) {
+      if (value === '' && updated.length > 1 && index < updated.length - 1) {
         updated.splice(index, 1);
       }
       return updated;
@@ -83,7 +81,7 @@ const RecipeItem = ({ recipe }) => {
         updated.push('');
       }
 
-      if (value.trim() === '' && updated.length > 1 && index < updated.length - 1) {
+      if (value === '' && updated.length > 1 && index < updated.length - 1) {
         updated.splice(index, 1);
       }
 
@@ -131,13 +129,13 @@ const RecipeItem = ({ recipe }) => {
           ))}
         </ul>
       ) : (
-        <ul>
+        <ol className={classes.instructionsList}>
           {recipe.instructions.map((ins, index) => (
-            <li key={index}>
-              {index + 1}. {ins}
+            <li key={index} className={classes.instructionItem}>
+              {ins}
             </li>
           ))}
-        </ul>
+        </ol>
       )}
 
       {isEditing && (
